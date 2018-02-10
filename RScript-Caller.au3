@@ -4,7 +4,12 @@
 #include <WinAPIFiles.au3>
 #pragma compile(Icon, 'icon.ico')
 
-$rscript_path = IniRead ( @ScriptDir & "\config.ini", "config", "rscript_path", "C:\Program Files\R\R-3.4.1\bin\Rscript.exe" )
+$config_path = @ScriptDir & "\config.ini"
+If FileExists(@ScriptDir & "\config-my.ini") Then
+   $config_path = @ScriptDir & "\config-my.ini"
+EndIf
+
+$rscript_path = IniRead ( $config_path, "config", "rscript_path", "C:\Program Files\R\R-3.4.1\bin\x64\Rscript.exe" )
 
 If Not(FileExists($rscript_path)) Then
    MsgBox($MB_SYSTEMMODAL, "Config Error", "RSciprt doesn't exists in path " & $rscript_path & @LF & "Please setup your config.ini")
@@ -19,6 +24,9 @@ For $i = 1 To $CommandLine[0]
 	  ContinueLoop
    EndIf
 
+   Local $sDrive = "", $sDir = "", $sFileName = "", $sExtension = ""
+   Local $aPathSplit = _PathSplit($file, $sDrive, $sDir, $sFileName, $sExtension)
+
    Local $tmp = _TempFile() & '.bat'
 
    If FileExists($tmp) Then
@@ -26,6 +34,7 @@ For $i = 1 To $CommandLine[0]
    EndIf
 
    Local $hFileOpen = FileOpen($tmp, $FO_APPEND)
+   FileWriteLine($hFileOpen, 'chdir /d "' & $sDir & '"')
    FileWriteLine($hFileOpen, '"' & $rscript_path & '" "' & $file & '"')
    FileWriteLine($hFileOpen, 'pause')
    FileClose($hFileOpen)
