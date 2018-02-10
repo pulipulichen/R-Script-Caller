@@ -34,7 +34,7 @@ For $i = 1 To $CommandLine[0]
    EndIf
 
    Local $hFileOpen = FileOpen($tmp, $FO_APPEND)
-   FileWriteLine($hFileOpen, 'chdir /d "' & $sDir & '"')
+   FileWriteLine($hFileOpen, 'chdir /d "' & $sDrive & "\"  & $sDir & '"')
    FileWriteLine($hFileOpen, '"' & $rscript_path & '" "' & $file & '"')
    FileWriteLine($hFileOpen, 'pause')
    FileClose($hFileOpen)
