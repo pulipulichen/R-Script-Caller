@@ -32,6 +32,6 @@ For $i = 1 To $CommandLine[0]
    $cmd = $cmd & '"'  & $rscript_path & '" "' & $file & '"'
    $cmd = $cmd & ' & '
    $cmd = $cmd & 'pause'
-   MsgBox($MB_SYSTEMMODAL, "Config Error", $cmd)
+   ;MsgBox($MB_SYSTEMMODAL, "Config Error", $cmd)
    Run(@ComSpec & " /c " & $cmd)
 Next
